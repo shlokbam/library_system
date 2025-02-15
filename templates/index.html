@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - Library System{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 hero-text mb-3">Welcome to Your Digital Library</h1>
+        <p class="lead hero-text mb-4">Your gateway to knowledge, community, and literary exploration</p>
+    </div>
+</div>
+
+<!-- Quick Stats Section -->
+<div class="container mb-5">
+    <h2 class="section-title">Library Statistics</h2>
+    <div class="row">
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="stats-card text-center p-4">
+                <i class="bi bi-people stats-icon"></i>
+                <div class="stats-number">{{ users_count }}</div>
+                <div class="stats-label">Members</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="stats-card text-center p-4">
+                <i class="bi bi-book stats-icon"></i>
+                <div class="stats-number">{{ books_count }}</div>
+                <div class="stats-label">Books</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="stats-card text-center p-4">
+                <i class="bi bi-bookmark stats-icon"></i>
+                <div class="stats-number">{{ active_borrowers }}</div>
+                <div class="stats-label">Active Borrowers</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="stats-card text-center p-4">
+                <i class="bi bi-chat-dots stats-icon"></i>
+                <div class="stats-number">{{ forum_posts_count }}</div>
+                <div class="stats-label">Forum Discussions</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Introduction Section -->
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="section-title">About Our Library</h2>
+            <p class="lead">Our digital library system brings the traditional library experience into the modern age.</p>
+            <p>Track your borrowed books, participate in community discussions, and explore our vast collection of literature. Our platform makes it easy to manage your reading journey and connect with fellow book enthusiasts.</p>
+            <p>Join our growing community of readers and take advantage of features like personalized book tracking, forum discussions, and reading progress monitoring.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Library Rules Section -->
+<div class="container mb-5">
+    <h2 class="section-title">Library Guidelines</h2>
+    <div class="accordion" id="rulesAccordion">
+        <div class="accordion-card mb-3">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#borrowingRules">
+                        Borrowing Rules
+                    </button>
+                </h2>
+                <div id="borrowingRules" class="accordion-collapse collapse show" data-bs-parent="#rulesAccordion">
+                    <div class="accordion-body">
+                        <ul>
+                            <li>Standard loan period is 14 days</li>
+                            <li>Maximum of 5 books can be borrowed at once</li>
+                            <li>Books can be renewed twice if no one else has requested them</li>
+                            <li>Late returns incur a fee of $0.50 per day</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Late Fee Calculator -->
+<div class="container mb-5">
+    <h2 class="section-title">Late Fee Calculator</h2>
+    <div class="calculator-card p-4">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Issue Date</label>
+                <input type="date" class="form-control" id="issueDate">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Due Date</label>
+                <input type="date" class="form-control" id="dueDate">
+            </div>
+        </div>
+        <button class="btn btn-primary mb-3" onclick="calculateFee()">Calculate Fee</button>
+        <div id="feeResult" class="fee-result p-3 bg-light"></div>
+    </div>
+</div>
+
+<!-- Reading Tips Section -->
+<div class="container mb-5">
+    <h2 class="section-title">Reading Tips</h2>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="reading-tip-card p-4">
+                <h5>Effective Reading Strategies</h5>
+                <p>Learn techniques to improve comprehension and retention while reading.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="reading-tip-card p-4">
+                <h5>Book Care Guidelines</h5>
+                <p>Tips for maintaining books in good condition during your borrowing period.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="reading-tip-card p-4">
+                <h5>Note-Taking Methods</h5>
+                <p>Effective ways to take and organize notes while reading.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function calculateFee() {
+        const issueDate = new Date(document.getElementById('issueDate').value);
+        const dueDate = new Date(document.getElementById('dueDate').value);
+        const today = new Date();
+        
+        if (today <= dueDate) {
+            document.getElementById('feeResult').innerHTML = 'No late fee - book is not overdue';
+            return;
+        }
+        
+        const daysLate = Math.floor((today - dueDate) / (1000 * 60 * 60 * 24));
+        const fee = daysLate * 0.50;
+        
+        document.getElementById('feeResult').innerHTML = `
+            <p>Days overdue: ${daysLate}</p>
+            <p>Late fee: $${fee.toFixed(2)}</p>
+        `;
+    }
+    </script>
+
+<!-- Add this section in index.html after the Reading Tips Section -->
+<div class="container mb-5">
+    <h2 class="section-title">Our Project Team</h2>
+    <div class="team-section row">
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="team-card text-center p-4">
+                <div class="team-image-container mb-3">
+                    <img src="{{ url_for('static', filename='images/3.jpeg') }}" alt="Avantika Sawant" class="team-image">
+                </div>
+                <h5 class="team-name">Avantika Sawant</h5>
+                <p class="team-roll">Roll No: 33</p>
+                <!-- <p class="team-role text-muted">Backend Developer</p> -->
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="team-card text-center p-4">
+                <div class="team-image-container mb-3">
+                    <img src="{{ url_for('static', filename='images/2.png') }}" alt="Samruddhi Shinde" class="team-image">
+                </div>
+                <h5 class="team-name">Samruddhi Shinde</h5>
+                <p class="team-roll">Roll No: 41</p>
+                <!-- <p class="team-role text-muted">Frontend Developer</p> -->
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="team-card text-center p-4">
+                <div class="team-image-container mb-3">
+                    <img src="{{ url_for('static', filename='images/1.png') }}" alt="Shlok Bam" class="team-image">
+                </div>
+                <h5 class="team-name">Shlok Bam</h5>
+                <p class="team-roll">Roll No: 42</p>
+                <!-- <p class="team-role text-muted">UI/UX Designer</p> -->
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="team-card text-center p-4">
+                <div class="team-image-container mb-3">
+                    <img src="{{ url_for('static', filename='images/4.jpeg') }}" alt="Shreyas Chulliyan" class="team-image">
+                </div>
+                <h5 class="team-name">Shreyas Chulliyan</h5>
+                <p class="team-roll">Roll No: 44</p>
+                <!-- <p class="team-role text-muted">Project Manager</p> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <h2 class="section-title">Our Project Guide</h2>
+    <div class="row guide-section">
+        <div class="col-md-4 text-center mb-4">
+            <div class="guide-image-container">
+                <img src="{{ url_for('static', filename='images/5.jpeg') }}" alt="Prof. Palomi Gawli" class="guide-image">
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="guide-description">
+                <h3 class="guide-name">Prof. Palomi Gawli</h3>
+                <p class="guide-title text-muted">Assistant Professor, AIDS Department</p>
+                <div class="guide-credentials">
+                    <p>
+                        <strong>Expertise:</strong> Artifical Intelligence, Machine Learning, Database Management
+                    </p>
+                    <p>
+                        Our digital library project was developed under the expert guidance of Prof. Palomi Gawli, 
+                        who provided invaluable insights, technical mentorship, and continuous support throughout 
+                        our journey.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="team-description text-center mt-4">
+        <p class="lead">This digital library system was created as a Course Project for the Database Management System course, showcasing our collaborative skills and passion for technology.</p>
+    </div>
+</div>
+
+{% endblock %}
