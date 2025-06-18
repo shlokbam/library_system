@@ -1,4 +1,3 @@
-# routes.py
 import logging
 import os
 import uuid
@@ -48,14 +47,7 @@ def process_image(file, max_size=(800, 600), quality=85):
     img.save(filepath, optimize=True, quality=quality)
     return filename
 
-# Basic Routes
-# @app.route('/')
-# def index():
-#     """Home page route"""
-#     books = Book.query.all()
-#     return render_template('index.html', books=books)
 
-# Authentication Routes
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     """User registration route"""
@@ -94,7 +86,7 @@ def register():
         except Exception as e:
             db.session.rollback()
             logger.error(f"Registration error: {str(e)}")
-            flash('An error occurred during registration. Please try again.', 'danger')
+            flash('Email is already Registerd! Please Login.', 'danger')
             return redirect(url_for('register'))
 
     return render_template('register.html')
